@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <title>Title</title>
+</head>
+<body ng-app="MainCtrl">
+<div class="container-fluid">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#!">Kafka_Monitor</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a ui-sref="consumerGroup" onclick="navActive(this)" ui-sref-active="active">ConsumerGroup</a>
+                    </li>
+                    <li><a ui-sref="topic" onclick="navActive(this)" ui-sref-active="active">Topic</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+    <ui-view></ui-view>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.9/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.9/angular-route.min.js"></script>
+<script src="https://cdn.bootcss.com/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script type="text/ng-template" id="home.html">
+    <div class="container">
+        <div class="jumbotron">
+            <h1>欢迎，使用万达kafka监控系统</h1>
+            <p>语言:golang,时序数据库:prometheus,图形:Grafana。</p>
+            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="consumer.html">
+    <div class="container">
+        <h1>请选择消费组</h1>
+        <div class="container-fluid">
+            <div class="form-inline navbar-right">
+                <div class="form-group">
+                    <label for="exampleInputName2">过滤组名</label>
+                    <input type="text" class="form-control" ng-model="test" id="exampleInputName2"
+                           placeholder="groupname">
+                </div>
+            </div>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="x in consumer | filter:test "><a
+                    ui-sref="consumerdetail({groupname:'{{x.ConsumerGroupName}}'})">{{ x.ConsumerGroupName }}</a>
+            </li>
+        </ul>
+    </div>
+</script>
+<script type="text/ng-template" id="consumerdetail.html">
+    <div class="container">
+        <h1> {{ groupname }}  -- 详细信息 </h1>
+        <ol class="breadcrumb">
+            <li><a ui-sref="consumerGroup">ConsumerGroup</a></li>
+            <li>{{ groupname }}</li>
+        </ol>
+        <h1> Brokers </h1>
+        <table class="table table-bordered table-striped">
+            <tr>
+                <td></td>
+                <td>服务器</td>
+                <td>端口</td>
+            </tr>
+            <tr ng-repeat="x in Brokers">
+                <td>{{ x.Id }}</td>
+                <td>{{ x.Host }}</td>
+                <td>{{ x.Port }}</td>
+            </tr>
+        </table>
+        <h1>Consumer Offsets</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Topic</th>
+                <th>Partition</th>
+                <th>Offset</th>
+                <th>logSize</th>
+                <th>Lag</th>
+                <th>Owner</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="(i,x) in topics" ng-class="{'btn-danger':x.Name!=''}">
+                <td>{{ x.Name }}</td>
+                <td>{{ x.Partition }}</td>
+                <td>{{ x.Offset }}</td>
+                <td>{{ x.LogSize }}</td>
+                <td>{{ x.Lag }}</td>
+                <td>{{ x.Owner }}</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</script>
+<script type="text/ng-template" id="topic.html">
+    <div class="container">
+        <h1>请选择一个TOPIC</h1>
+        <div class="container-fluid">
+            <div class="form-inline navbar-right">
+                <div class="form-group">
+                    <label for="exampleInputName2">过滤名</label>
+                    <input type="text" class="form-control" ng-model="test" id="exampleInputName2"
+                           placeholder="topic">
+                </div>
+            </div>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="x in topic | filter:test "><a
+                    ui-sref="topicDetail({topicname:'{{x.Name}}'})">{{ x.Name }}</a>
+            </li>
+        </ul>
+    </div>
+</script>
+<script type="text/ng-template" id="topicDetail.html">
+    <div class="container">
+        <h1>TOPIC {{ name }} 详细信息</h1>
+        <ol class="breadcrumb">
+            <li><a ui-sref="topic">Topic Lists</a></li>
+            <li>{{ name }}</li>
+        </ol>
+        <h1>注册的消费组</h1>
+        <ul class="list-group">
+            <li class="list-group-item"><b>消费组名称</b></li>
+            <li class="list-group-item" ng-repeat="x in consumerGroup "><a
+                    ui-sref="chart({topicname:'{{ name }}',groupname:'{{ x }}'})">{{ x }}</a>
+            </li>
+        </ul>
+    </div>
+</script>
+<script type="text/ng-template" id="chart.html">
+    <div class="container">
+        <h1>topic: {{ topicname }} consumer:{{ groupname }} 历史数据</h1>
+        <ol class="breadcrumb">
+            <li><a ui-sref="topicDetail({topicname:'{{ topicname }}'})">{{ topicname}}</a></li>
+            <li>{{ groupname }}</li>
+        </ol>
+        <iframe ng-src="{{ myurl }}" width="100%" height="900px" frameborder="0"
+                scrolling="auto" id="test"></iframe>
+    </div>
+</script>
+<script>
+    var myApp = angular.module('MainCtrl', ['ui.router']);
+    var consumer = null
+    var topic = null
+
+    myApp.config(function ($stateProvider) {
+        var homeState = {
+            name: 'home',
+            url: '',
+            templateUrl: 'home.html',
+            controller: function ($scope, $http, $state) {
+            },
+        }
+        var consumerGroupState = {
+            name: 'consumerGroup',
+            url: '/consumerGroup',
+            templateUrl: 'consumer.html',
+            controller: function ($scope, $http, $state) {
+                if (consumer == null) {
+                    $http.get("/consumerGroup").then(function (response) {
+                        console.log(response)
+                        $scope.consumer = response.data;
+                        consumer = response.data;
+                    });
+                } else {
+                    $scope.consumer = consumer;
+                }
+                $state.go("consumerdetailState")
+            },
+        }
+        var consumerdetailState = {
+            name: 'consumerdetail',
+            url: '/consumerdetail/{groupname}',
+            templateUrl: 'consumerdetail.html',
+            controller: function ($scope, $transition$, $stateParams, $http) {
+                if (consumer == null) {
+                    $http.get("/consumerGroup").then(function (response) {
+                        consumer = response.data;
+                        for (i in consumer) {
+                            if (consumer[i].ConsumerGroupName == $stateParams.groupname) {
+                                $scope.topics = consumer[i].Topics
+                                $scope.Brokers = consumer[i].Brokers
+                                console.log(consumer[i].Brokers)
+                                break
+                            }
+                        }
+                    });
+                } else {
+                    for (i in consumer) {
+                        if (consumer[i].ConsumerGroupName == $stateParams.groupname) {
+                            $scope.topics = consumer[i].Topics
+                            $scope.Brokers = consumer[i].Brokers
+                            console.log(consumer[i].Brokers)
+                            break
+                        }
+                    }
+                }
+                $scope.isTopic = function (name) {
+                    if (name == "") {
+                        return true
+                    }
+                    return false
+                }
+                // $scope.consumer=
+                $scope.groupname = $stateParams.groupname
+                // console.log($transition$.params().groupname)
+                // console.log($stateParams.groupname)
+                // console.log($scope.consumer);
+            }
+        }
+
+        var topicState = {
+            name: 'topic',
+            url: '/topic',
+            templateUrl: 'topic.html',
+            controller: function ($scope, $transition$, $stateParams, $http) {
+                if (topic == null) {
+                    $http.get("/topic").then(function (response) {
+                        topic = response.data;
+                        $scope.topic = topic
+
+                    });
+                } else {
+                    $scope.topic = topic
+                }
+            }
+        }
+        var topicDetailState = {
+            name: 'topicDetail',
+            url: '/topicDetail/{topicname}',
+            templateUrl: 'topicDetail.html',
+            controller: function ($scope, $transition$, $stateParams, $http) {
+                $scope.name = $stateParams.topicname
+                if (topic == null) {
+                    $http.get("/topic").then(function (response) {
+                        topic = response.data;
+
+                        for (var i in topic) {
+                            if (topic[i].Name == $stateParams.topicname) {
+                                $scope.consumerGroup = topic[i].Group
+                                break
+                            }
+                        }
+                    });
+                } else {
+                    $scope.topic = topic
+                    for (var i in topic) {
+                        if (topic[i].Name == $stateParams.topicname) {
+                            $scope.consumerGroup = topic[i].Group
+                            break
+                        }
+                    }
+                }
+            }
+        }
+        // var chartState = {
+        //     name: 'chart',
+        //     url: '/chart/{topicname}/{groupname}',
+        //     templateUrl: 'chart.html',
+        //     controller: function ($scope, $stateParams) {
+        //         $scope.topicname = $stateParams.topicname
+        //         $scope.groupname = $stateParams.groupname
+        //         // $scope.url ="&var-topic="+$stateParams.topicname+"&var-group="+$stateParams.groupname
+        //         $scope.url="&sdfs"
+        //     }
+        // }
+        var chartState = {
+            name: 'chart',
+            url: '/chart/{topicname}/{groupname}',
+            templateUrl: 'chart.html',
+            controller: function ($scope, $stateParams, $sce) {
+                $scope.topicname = $stateParams.topicname
+                $scope.groupname = $stateParams.groupname
+                // $scope.url="[[.Grafana]]&var-cluster=[[.KafkaName]]&var-topic="+$stateParams.topicname+"&var-group="+$stateParams.groupname
+                $scope.myurl = $sce.trustAsResourceUrl("[[.Grafana]]&var-cluster=[[.KafkaName]]&var-topic=" + $stateParams.topicname + "&var-group=" + $stateParams.groupname)
+            },
+        }
+        $stateProvider.state(consumerGroupState);
+        $stateProvider.state(consumerdetailState);
+        $stateProvider.state(topicState);
+        $stateProvider.state(topicDetailState);
+        $stateProvider.state(chartState);
+        $stateProvider.state(homeState);
+    });
+
+    function navActive(f) {
+        // $("ul.nav .navbar-nav > li").removeClass("active")
+        $("ul.nav > li ").each(function () {
+            $(this).removeClass("active")
+        })
+        $(f).parent().addClass("active")
+    }
+</script>
+</body>
+</html>
