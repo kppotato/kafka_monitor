@@ -1,8 +1,10 @@
 # kafka_monitor
-# # # 本系统主要是收集kafka集群的的消费情况。
 
 
-使用是技术：
+> 本系统主要是收集kafka集群的的消费情况。
+
+
+技术：
 > 前端使用bootstrap, angular.js, 后端使用:golang   时序数据库：prometheus,图形：Grafana
 
 
