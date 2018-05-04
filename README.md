@@ -20,7 +20,7 @@
 目录结构：main view static
 
 grafana.json是grafana的模板文件，导入后作为-grafana 参数给程序用来展示数据，在grafana里自己配置prometheus地址
-
+![Alt text](/path/img.jpg)
 
 
 
