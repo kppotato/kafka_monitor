@@ -54,10 +54,12 @@
  </table>
 
 
-** 使用说明： **
+> ** 使用说明： **
+
 -  kafka_monitor 是已经编译好的go文件，可以运行在linux系统下。
 - 目录结构  kafka_monitor view目录，static目录放到一起。
 - 运行 ./kafka_monitor -参数
+
 **注意：需要把view和static和go程序放在同一个目录下。**
 
 grafana.json是grafana的模板文件，导入后作为-grafana 参数给程序用来展示数据，在grafana里自己配置prometheus地址
