@@ -55,7 +55,7 @@
 
 **注意：需要把view和static和go程序放在一起使用。**
 
-*使用说明：
+* 使用说明：
 -  kafka_monitor 是已经编译好的go文件，可以运行在linux系统下。
 - 目录结构  kafka_monitor和view目录，static目录放到一起。
 - 运行 ./kafka_monitor -参数
