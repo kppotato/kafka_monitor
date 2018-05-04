@@ -53,8 +53,8 @@
    </tbody>
  </table>
 
-注意：需要把view和static和go程序放在一起使用。
-目录结构：main view static
+**注意：需要把view和static和go程序放在一起使用。**
+*使用说明
 
 grafana.json是grafana的模板文件，导入后作为-grafana 参数给程序用来展示数据，在grafana里自己配置prometheus地址
 ![展示](/path/img.jpg)
