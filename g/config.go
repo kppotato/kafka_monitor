@@ -23,7 +23,7 @@ func NewOption() *Options{
 		KafkaName:"KP-TEST-CLUSTER",
 		PrometheusPort:4567,
 		HttpPort:9876,
-		Grafana:"http://192.168.51.110:3000/d/JSzmhLMiz/kafka?orgId=1",
-		ZookeeperAddress:"cd-kafka00.host-mtime.com:2181,cd-kafka01.host-mtime.com:2181,cd-kafka02.host-mtime.com:2181,cd-kafka03.host-mtime.com:2181,cd-kafka04.host-mtime.com:2181",
+		Grafana:"http://xxxxxxxx/d/xxxx/kafka?orgId=1",
+		ZookeeperAddress:"",
 	}
 }
