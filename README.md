@@ -8,9 +8,9 @@
 - 前端使用bootstrap, angular.js, 后端使用:golang   时序数据库：prometheus,图形：Grafana
 
 
-使用说明书：
+> 使用说明书：
 
-      运行golang主程序 主程序需要的参数，
+      - 运行golang主程序 主程序需要的参数，
  <table>
  <thead>
  <tr>
