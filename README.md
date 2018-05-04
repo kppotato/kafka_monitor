@@ -3,7 +3,7 @@
 
 
 使用是技术：
-前端使用bootstrap, angular.js, 后端使用:golang   时序数据库：prometheus,图形：Grafana
+> 前端使用bootstrap, angular.js, 后端使用:golang   时序数据库：prometheus,图形：Grafana
 
 
 使用说明书：
