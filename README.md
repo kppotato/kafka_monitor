@@ -17,6 +17,7 @@
   <td>参数名</td>
   <td>描述</td>
   <td>例子</td>
+  <td>必须字段</td>
  </tr>
   </thead>
  <tbody>
@@ -24,11 +25,13 @@
   <td>kafka-name</td>
   <td>kafka集群名字</td>
   <td>./kafka_monitor -kafka-name=名称</td>
+   <td>必须字段</td>
  </tr>
     <tr>
   <td>zookeeper-address</td>
   <td>zk地址 (多个用,间隔)</td>
   <td>./kafka_monitor -zookeeper-address=xxx:000,xxx:000</td>
+     <td>必须字段</td>
  </tr>
   <tr>
   <td>zkpath</td>
@@ -39,16 +42,19 @@
   <td>grafana</td>
   <td>grafana模板地址</td>
   <td>./kafka_monitor -grafana=xxx </td>
+     <td>必须字段</td>
  </tr>
       <tr>
   <td>prometheus-port</td>
   <td>prometheus获取数据端口</td>
   <td>./kafka_monitor -prometheus-port=1111 </td>
+       <td>必须字段</td>
  </tr>
         <tr>
   <td>http-port</td>
   <td>页面http端口</td>
   <td>./kafka_monitor -http-port=1111 </td>
+         <td>必须字段</td>
  </tr>
    </tbody>
  </table>
